@@ -1,17 +1,17 @@
 # run_backtest.py
-# Run the full backtest pipeline and show results.
-# This is the main script to run if you just want to see performance numbers.
+# Run the full backtest pipeline, print results, and save plots.
 #
 # Usage:
 #   python run_backtest.py
 #
-# Takes about 2-5 minutes depending on your machine (mostly the rolling Johansen).
+# Takes about 2-5 minutes depending on your machine (rolling Johansen is the slow part).
 
 import sys
 import logging
 import warnings
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 warnings.filterwarnings('ignore')   # statsmodels throws a bunch of convergence warnings
 logging.basicConfig(level=logging.WARNING)  # set to INFO for more detail
@@ -81,7 +81,34 @@ def main():
         result.trades.to_csv(trades_path, index=False)
         print(f"  Trade log saved to: {trades_path}")
 
+    # save plots
+    _plot_results(result)
+
     return result
+
+
+def _plot_results(result):
+    """Quick plot of equity curve and drawdown. Nothing fancy."""
+    roll_max = result.equity_curve.cummax()
+    drawdown = (result.equity_curve - roll_max) / roll_max * 100
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 7), sharex=True)
+
+    ax1.plot(result.equity_curve.index, result.equity_curve / 1e6, linewidth=1.2)
+    ax1.axhline(result.equity_curve.iloc[0] / 1e6, color='gray', linestyle='--', linewidth=0.8)
+    ax1.set_ylabel('Portfolio Value ($M)')
+    ax1.set_title('Equity Curve — Energy Sector Stat Arb')
+    ax1.grid(True, alpha=0.3)
+
+    ax2.fill_between(drawdown.index, drawdown.values, 0, color='red', alpha=0.4)
+    ax2.set_ylabel('Drawdown (%)')
+    ax2.set_title('Drawdown')
+    ax2.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    plt.savefig('results.png', dpi=120, bbox_inches='tight')
+    print("  Plot saved to results.png")
+    plt.close()
 
 
 if __name__ == '__main__':

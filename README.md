@@ -173,8 +173,7 @@ This prevents the strategy from trading a spread that has permanently broken dow
 ├── backtest/
 │   └── engine.py           # full backtester with cost model
 ├── main.py                 # async orchestrator (ZMQ mode)
-├── run_backtest.py         # historical backtest runner
-├── tearsheet.py            # performance plots + architecture diagram
+├── run_backtest.py         # historical backtest runner + plots
 └── requirements.txt
 ```
 
@@ -191,12 +190,10 @@ cd cross-asset-stat-arb
 pip install -r requirements.txt
 
 # run the backtest (takes 3-5 mins for rolling Johansen)
+# prints performance metrics and saves results.png + equity_curve.csv
 python run_backtest.py
 
-# generate tearsheet and architecture diagram
-python tearsheet.py
-
-# run the live replay via ZMQ (needs the backtest to run first for warmup)
+# run the live replay via ZMQ (uses same signal logic as backtest)
 python main.py --mode replay
 ```
 
