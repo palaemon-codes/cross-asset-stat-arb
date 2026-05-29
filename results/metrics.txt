@@ -1,0 +1,40 @@
+PERFORMANCE METRICS
+=============================================
+Assets          : ['XOM', 'CVX', 'BP', 'COP', 'SLB', 'XLE']
+Period          : 2019-01-01 to 2024-12-31
+Initial Capital : $1,000,000
+
+Total Return        : -14.85%
+Annualised Return   : -2.39%
+Annualised Vol      : 12.85%
+Sharpe Ratio        : -0.186
+Max Drawdown        : -33.51%
+Number of Trades    : 76
+
+COST BREAKDOWN
+---------------------------------------------
+  Taker fees               : $3,315.63
+  Short borrow             : $551.57
+  Market impact            : $191.73
+  Total costs              : $4,058.92
+
+CAPACITY ANALYSIS
+---------------------------------------------
+ AUM ($M)  Net PnL ($K)  Est. Sharpe  Impact/PnL %
+      1.0        -148.7    27654.815           0.1
+      5.0        -753.0   140089.620           1.4
+     10.0       -1545.3   287470.589           4.1
+     25.0       -4310.8   801940.264          16.1
+     50.0      -10812.6  2011479.318          45.7
+    100.0      -34019.5  6328685.592         129.1
+    250.0     -226586.2 42152036.536         510.5
+
+STATIONARITY CHECK (ADF)
+---------------------------------------------
+    adf_level_pval adf_diff_pval is_I1
+XOM         0.8473           0.0  True
+CVX         0.6407           0.0  True
+BP          0.4633           0.0  True
+COP         0.7375           0.0  True
+SLB         0.5069           0.0  True
+XLE         0.8145           0.0  True

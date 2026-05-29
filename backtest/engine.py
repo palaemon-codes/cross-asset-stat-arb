@@ -392,8 +392,11 @@ def capacity_analysis(backtest_result, prices_df, beta_vec, aum_range=None):
         net_pnl       = scaled_pnl - scaled_impact * scale   # double-count intentional to show decay
 
         net_return = net_pnl / aum
-        # very rough estimate: assume same vol structure
-        est_sharpe = base_sharpe * (net_pnl / max(scaled_pnl, 1))
+        # capacity sharpe only meaningful when base strategy is profitable
+        if base_pnl <= 0 or scaled_pnl == 0:
+            est_sharpe = base_sharpe  # already unprofitable, impact just makes it worse
+        else:
+            est_sharpe = base_sharpe * max(0.0, net_pnl / scaled_pnl)
         rows.append({
             'AUM ($M)'     : aum / 1e6,
             'Net PnL ($K)' : round(net_pnl / 1e3, 1),
